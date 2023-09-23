@@ -54,6 +54,20 @@ services:
         condition: service_healthy
     container_name: attendance
 
+  nginx:
+    image: nginx:alpine
+    container_name: campaign-nginx
+    restart: unless-stopped
+    ports:
+      - "80:80"
+    volumes:
+      - ./docker-compose/nginx:/etc/nginx/conf.d/
+    depends_on:
+      - register
+      - attendance
+    networks:
+        - attendance-network
+
 networks:
   attendance-network:
     driver: bridge
